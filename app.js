@@ -5,18 +5,15 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const paramsService = require('./params-service');
+const Fixture = require('./fixture');
+const params = paramsService.getParams();
 const app = express();
 app.use(bodyParser.json());
 
 const storage = require('./storage');
 
-app.get('/', function(request, response) {
-    response.sendFile(__dirname + '/index.html');
-});
-
-app.get('/bower_components/*', function(request, response) {
-    response.sendFile(__dirname + '/' + request.path);
-});
+app.use(express.static(params.staticFolder))
 
 app.route('/:collection/')
     .get(function(request, response) {
@@ -39,6 +36,17 @@ app.route('/:collection/:key')
     });
 
 
-app.listen(3000, function() {
-    console.log('Server running...');
-});
+if (params.fixtureFolder) {
+    const fixture = new Fixture(params.fixtureFolder);
+    fixture.load();
+    fixture.onLoaded.on('loaded', () => {
+        app.listen(params.port, function() {
+            console.log('Server running...', params);
+        });
+    })
+} else {
+    app.listen(params.port, function() {
+        console.log('Server running...', params, storage.dump());
+        
+    });
+}

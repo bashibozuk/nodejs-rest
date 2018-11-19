@@ -71,6 +71,9 @@ var Storage = (function(){
             if (data[collectionName] && data[collectionName][pk]) {
                 delete data[collectionName][pk];
             }
+        },
+        dump: function () {
+           return data;
         }
 
 
