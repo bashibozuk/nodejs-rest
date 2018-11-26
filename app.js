@@ -17,21 +17,25 @@ app.use(express.static(params.staticFolder));
 
 app.route('/rest/:collection/')
     .get(function(request, response) {
+        console.log('GET', '/rest/:collection/', request);
         response.send(JSON.stringify(storage.list(request.params.collection)));
     })
     .post(function (request, response) {
-        console.log(request.body);
+        console.log('POST', '/rest/:collection/', request);
         response.send(JSON.stringify(storage.create(request.params.collection, request.body)));
     });
 
-app.route('rest/:collection/:key')
+app.route('/rest/:collection/:key')
     .get(function (request, response) {
+        console.log('GET', '/rest/:collection/:key', request);
         response.send(JSON.stringify(storage.read(request.params.collection, request.params.key)));
     })
     .put(function (request, response) {
+        console.log('PUT', '/rest/:collection/:key', request);
         response.send(JSON.stringify(storage.update(request.params.collection, request.params.key, request.body)));
     })
     .delete(function (request, response) {
+        console.log('DELETE', '/rest/:collection/:key', request);
         response.send(JSON.stringify(storage.remove(request.params.collection, request.params.key)));
     });
 
