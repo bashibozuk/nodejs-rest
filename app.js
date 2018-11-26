@@ -13,9 +13,9 @@ app.use(bodyParser.json());
 
 const storage = require('./storage');
 
-app.use(express.static(params.staticFolder))
+app.use(express.static(params.staticFolder));
 
-app.route('/:collection/')
+app.route('/rest/:collection/')
     .get(function(request, response) {
         response.send(JSON.stringify(storage.list(request.params.collection)));
     })
@@ -24,7 +24,7 @@ app.route('/:collection/')
         response.send(JSON.stringify(storage.create(request.params.collection, request.body)));
     });
 
-app.route('/:collection/:key')
+app.route('rest/:collection/:key')
     .get(function (request, response) {
         response.send(JSON.stringify(storage.read(request.params.collection, request.params.key)));
     })
@@ -35,6 +35,9 @@ app.route('/:collection/:key')
         response.send(JSON.stringify(storage.remove(request.params.collection, request.params.key)));
     });
 
+app.get('*', function(request, response, next) {
+    response.sendFile(params.staticFolder + '/index.html');
+});
 
 if (params.fixtureFolder) {
     const fixture = new Fixture(params.fixtureFolder);
