@@ -10,11 +10,12 @@ Supported calls:
 When sending a request `Content-Type: application/json` header must be set
  
 ***Parameters***
+- `port` - the port on which server receives requests, 3000 by default
 - `static-folder` - the folder where the static resources are held, i.e. your site directory
 - `fixture-folder` - a folder in which all *.json files are parsed and put in the in-memory database. Optional parameter.
 
 ***Usage***
-- `node app.js  static-folder=<folder name> fixture-folder=<fixture-folder-name>` - starts the app and serves the static content from the folder name
+- `node app.js  port=<port number> static-folder=<folder name> fixture-folder=<fixture-folder-name>` - starts the app and serves the static content from the folder name
 and before the app starts will dump all the json files in <fixture-folder-name> in the in-memory database
 
 ***Example***
